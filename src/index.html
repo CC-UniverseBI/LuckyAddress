@@ -42,8 +42,8 @@
                                             <option value="3">3</option>
                                             <option value="6">6</option>
                                             <option value="9">9</option>
-                                            <option value="12">12</option>
-                                            <option value="15" selected>15</option>
+                                            <option value="12" selected>12</option>
+                                            <option value="15">15</option>
                                             <option value="18">18</option>
                                             <option value="21">21</option>
                                             <option value="24">24</option>
@@ -258,6 +258,12 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="lucky-numbers" class="col-sm-2 control-label">Lucky Numbers (optional)</label>
+                            <div class="col-sm-10">
+                                <textarea id="lucky-numbers" class="lucky-numbers private-data form-control" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="seed" class="col-sm-2 control-label">BIP39 Seed</label>
                             <div class="col-sm-10">
                                 <textarea id="seed" class="seed private-data form-control" data-show-qr autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
@@ -443,7 +449,7 @@
                                         <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#registered-coin-types" target="_blank">Coin</a>
                                     </label>
                                     <div class="col-sm-10">
-                                        <input id="coin-bip44" type="text" class="coin form-control" value="0" readonly>
+                                        <input id="coin-bip44" type="text" class="coin form-control" value="60" readonly>
                                     </div>
                                 </div>
                                 <div class="form-group">

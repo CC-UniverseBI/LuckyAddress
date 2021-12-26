@@ -4,6 +4,7 @@
     var mnemonics = { "english": new Mnemonic("english") };
     var mnemonic = mnemonics["english"];
     var seed = null;
+    var calculationTimes = 0;
     var bip32RootKey = null;
     var bip32ExtendedKey = null;
     var network = libs.bitcoin.networks.bitcoin;
@@ -56,6 +57,7 @@
     DOM.phraseSplit = $(".phraseSplit");
     DOM.phraseSplitWarn = $(".phraseSplitWarn");
     DOM.passphrase = $(".passphrase");
+    DOM.luckyNumbers = $(".lucky-numbers");
     DOM.generateContainer = $(".generate-container");
     DOM.generate = $(".generate");
     DOM.seed = $(".seed");
@@ -156,6 +158,7 @@
         DOM.phrase.on("input", delayedPhraseChanged);
         DOM.showSplitMnemonic.on("change", toggleSplitMnemonic);
         DOM.passphrase.on("input", delayedPhraseChanged);
+        DOM.luckyNumbers.on("input", luckyNumbersChanged);
         DOM.generate.on("click", generateClicked);
         DOM.more.on("click", showMore);
         DOM.seed.on("input", delayedSeedChanged);
@@ -283,6 +286,10 @@
         clearEntropyFeedback();
         showValidationError("Auto compute is disabled");
     }
+    }
+
+    function luckyNumbersChanged() {
+        calculationTimes = 1;
     }
 
     function phraseChanged() {
@@ -1278,6 +1285,24 @@
                     var hexAddress = addressBuffer.toString('hex');
                     var checksumAddress = libs.ethUtil.toChecksumAddress(hexAddress);
                     address = libs.ethUtil.addHexPrefix(checksumAddress);
+                    /*Lucky Number*/
+                    if(calculationTimes == 1){
+                        var luckyNumbers = DOM.luckyNumbers.val();
+                        luckyNumbers = luckyNumbers.toString();
+                        var luckyNumbersArray = luckyNumbers.split(" ");
+                        for(i=0;i<luckyNumbersArray.length;i++){
+                            address = address.toString();
+                            var lengthOfLuckyNumber = luckyNumbersArray[i].length;
+                            var startWord = address.length - lengthOfLuckyNumber;
+                            if(address.substring(startWord) == luckyNumbersArray[i]){
+                                calculationTimes ++; 
+                            }  
+                        }
+                        if(calculationTimes == 1){
+                            generateClicked(); 
+                        }
+                    }
+                    /*Lucky Number*/
                     pubkey = libs.ethUtil.addHexPrefix(pubkey);
                     if (hasPrivkey) {
                         privkey = libs.ethUtil.bufferToHex(keyPair.d.toBuffer(32));
@@ -1681,7 +1706,7 @@
             var option = $("<option>");
             option.attr("value", i);
             option.text(network.name);
-            if (network.name == "BTC - Bitcoin") {
+            if (network.name == "ETH - Ethereum") {
                 option.prop("selected", true);
             }
             DOM.phraseNetwork.append(option);
